@@ -53,39 +53,42 @@ def open_excel(file):
 
 if __name__ == "__main__":
     # process the school table
-    data = open_excel('东城小学坐标.xlsx')
-    excel = xlwt.Workbook()
-    rdTable = data.sheets()[0]
-    wtTable = excel.add_sheet("Sheet1", cell_overwrite_ok=True)
-    nrows = rdTable.nrows
-    wtTable.write(0,0,rdTable.row_values(0)[0])
-    wtTable.write(0,1,rdTable.row_values(0)[1])
-    wtTable.write(0,2,"WGS84_X")
-    wtTable.write(0,3,"WGS84_Y")
-    for i in range(1, nrows):
-        bd_lon, bd_lat = float(rdTable.row_values(i)[2]), float(rdTable.row_values(i)[3])
-        bd_lon, bd_lat = bd09togcj02(bd_lon, bd_lat)
-        wgs84_lon, wgs84_lat = gcj02towgs84(bd_lon, bd_lat)
-        wtTable.write(i,0,rdTable.row_values(i)[0])
-        wtTable.write(i,1,rdTable.row_values(i)[1])
-        wtTable.write(i,2,str(wgs84_lon))
-        wtTable.write(i,3,str(wgs84_lat))
-    excel.save('eastCitySchool_WGS84.xls')
+    #data = open_excel('东城小学坐标.xlsx')
+    #excel = xlwt.Workbook()
+    #rdTable = data.sheets()[0]
+    #wtTable = excel.add_sheet("Sheet1", cell_overwrite_ok=True)
+    #nrows = rdTable.nrows
+    #wtTable.write(0,0,rdTable.row_values(0)[0])
+    #wtTable.write(0,1,rdTable.row_values(0)[1])
+    #wtTable.write(0,2,"WGS84_X")
+    #wtTable.write(0,3,"WGS84_Y")
+    #for i in range(1, nrows):
+    #    bd_lon, bd_lat = float(rdTable.row_values(i)[2]), float(rdTable.row_values(i)[3])
+    #    bd_lon, bd_lat = bd09togcj02(bd_lon, bd_lat)
+    #    wgs84_lon, wgs84_lat = gcj02towgs84(bd_lon, bd_lat)
+    #    wtTable.write(i,0,rdTable.row_values(i)[0])
+    #    wtTable.write(i,1,rdTable.row_values(i)[1])
+    #    wtTable.write(i,2,str(wgs84_lon))
+    #    wtTable.write(i,3,str(wgs84_lat))
+    #excel.save('eastCitySchool_WGS84.xls')
 
     # process the eastCity table
-    data = open_excel('东城坐标.xlsx')
+    data = open_excel('西城区小区坐标0211.xlsx')
     excel = xlwt.Workbook()
     rdTable = data.sheets()[0]
     wtTable = excel.add_sheet("Sheet1", cell_overwrite_ok=True)
     nrows = rdTable.nrows
     wtTable.write(0,0,rdTable.row_values(0)[0])
     wtTable.write(0,1,"WGS84_X")
-    wtTable.write(0,1,"WGS84_Y")
+    wtTable.write(0,2,"WGS84_Y")
     for i in range(1, nrows):
-        bd_lon, bd_lat = float(rdTable.row_values(i)[1]), float(rdTable.row_values(i)[2])
-        bd_lon, bd_lat = bd09togcj02(bd_lon, bd_lat)
-        wgs84_lon, wgs84_lat = gcj02towgs84(bd_lon, bd_lat)
-        wtTable.write(i,0,rdTable.row_values(i)[0])
-        wtTable.write(i,1,str(wgs84_lon))
-        wtTable.write(i,2,str(wgs84_lat))
-    excel.save('eastCity_WGS84.xls')
+        try:
+            bd_lon, bd_lat = float(rdTable.row_values(i)[1]), float(rdTable.row_values(i)[2])
+            bd_lon, bd_lat = bd09togcj02(bd_lon, bd_lat)
+            wgs84_lon, wgs84_lat = gcj02towgs84(bd_lon, bd_lat)
+            wtTable.write(i,0,rdTable.row_values(i)[0])
+            wtTable.write(i,1,str(wgs84_lon))
+            wtTable.write(i,2,str(wgs84_lat))
+        except Exception as e:
+            wtTable.write(i,0,rdTable.row_values(i)[0])
+    excel.save('westCity_WGS84.xls')
